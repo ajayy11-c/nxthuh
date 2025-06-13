@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: background 1s, color 1s;
+    }
+
+    #lightBtn, #songBtn {
+      padding: 10px 20px;
+      margin: 10px auto;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #00ffcc;
+      color: black;
+      display: none;
+    }
+
+    #happyMsg {
+      font-size: 36px;
+      display: none;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .light {
+      background-color: #ffe6f0;
+      color: #ff0066;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="lightBtn">Turn on the lights</button>
+  <button id="songBtn">Play Song</button>
+  <div id="happyMsg">🎉 Happy Birthday 🎉</div>
+
+  <audio id="birthdaySong">
+    <source src="https://open.spotify.com/track/69Qzz3yyQSsA0T95jLDoPL?si=hvj9olEEQU6TktlJCX02wA.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // Show first button after load
+    window.onload = function() {
+      document.getElementById("lightBtn").style.display = "inline-block";
+    }
+
+    document.getElementById("lightBtn").onclick = function() {
+      document.body.classList.add("light");
+      document.getElementById("lightBtn").style.display = "none";
+      document.getElementById("songBtn").style.display = "inline-block";
+    }
+
+    document.getElementById("songBtn").onclick = function() {
+      document.getElementById("songBtn").style.display = "none";
+      document.getElementById("birthdaySong").play();
+      document.getElementById("happyMsg").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
