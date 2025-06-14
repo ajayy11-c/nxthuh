@@ -2,111 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ajay Bhava 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      padding: 0;
-      background-color: black;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #001F3F, #0074D9);
       color: white;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-      transition: background-color 2s ease;
+      text-align: center;
     }
-
-    button {
-      padding: 14px 28px;
-      font-size: 18px;
+    .main {
+      padding: 100px 20px;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+    .start-btn {
+      background-color: #00BFFF;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.2em;
       border: none;
-      border-radius: 8px;
+      border-radius: 30px;
       cursor: pointer;
-      margin-top: 20px;
-      opacity: 0;
-      transition: opacity 2s;
+      transition: background 0.3s ease;
     }
-
-    #lightBtn {
-      background-color: #00ffcc;
-      color: black;
-    }
-
-    #songBtn {
-      background-color: #ff66b2;
-      color: white;
-    }
-
-    #message {
-      font-size: 48px;
-      font-weight: bold;
-      color: #ff3399;
-      opacity: 0;
-      transition: opacity 2s ease-in-out;
-      margin-top: 40px;
-    }
-
-    .lightOn {
-      background-color: #fff0f5;
-      color: #333;
-    }
-
-    .visible {
-      opacity: 1 !important;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
+    .start-btn:hover {
+      background-color: #009ACD;
     }
   </style>
 </head>
 <body>
-
-  <button id="lightBtn">Turn On The Lights</button>
-  <button id="songBtn">Play Song</button>
-  <div id="message">Good morning Janemann</div>
-
-  <audio id="AJ.mp3">
-    <source src="AJ.mp3" type="audio/mpeg">
-    Your browser does not support the audio tag.
-  </audio>
-
-  <canvas id="confettiCanvas"></canvas>
-
-  <script src="confetti.js"></script>
-  <script>
-    const lightBtn = document.getElementById("lightBtn");
-    const songBtn = document.getElementById("songBtn");
-    const message = document.getElementById("message");
-    const audio = document.getElementById("birthdaySong");
-
-    // Step 1: Show light button after 2 sec
-    setTimeout(() => {
-      lightBtn.classList.add("visible");
-    }, 2000);
-
-    // Step 2: On light button click
-    lightBtn.onclick = () => {
-      document.body.classList.add("lightOn");
-      lightBtn.style.display = "none";
-      songBtn.classList.add("visible");
-    };
-
-    // Step 3: On play song button click
-    songBtn.onclick = () => {
-      songBtn.style.display = "none";
-      audio.play();
-      message.classList.add("visible");
-      // Start confetti 🎉
-      startConfetti();
-    };
-  </script>
+  <div class="main">
+    <h1>Welcome to Ajay Bhava 2026</h1>
+    <p>Your free education hub</p>
+    <button class="start-btn" onclick="window.location.href='subjects.html'">Continue</button>
+  </div>
 </body>
-</html>
+</html></html>
