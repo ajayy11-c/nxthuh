@@ -1,108 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SST Content</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SST Lectures</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      transition: all 0.4s ease-in-out;
-    }
     body {
       margin: 0;
       padding: 20px;
-      background: #001F3F;
+      background: #001f3f;
       color: white;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      animation: fadeIn 1s forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
     h1 {
-      color: #00BFFF;
-      margin-bottom: 30px;
+      color: #00bfff;
+      margin-bottom: 20px;
     }
-    h2 {
-      margin-top: 40px;
-      color: #00BFFF;
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .tab-button {
+      background-color: #00bfff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .tab-button.active {
+      background-color: #007acc;
+    }
+    .video-container {
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+    .video-container.active {
+      display: block;
     }
     video {
       width: 100%;
       max-width: 700px;
-      margin: 10px auto;
       border-radius: 15px;
-      box-shadow: 0 0 10px #00BFFF;
-      display: block;
+      box-shadow: 0 0 10px #00bfff;
+    }
+    .speed-control {
+      margin-top: 10px;
+      margin-bottom: 30px;
     }
     select {
       padding: 5px 10px;
       border-radius: 10px;
-      margin-bottom: 30px;
     }
-    .back-btn {
+    a.back-btn {
       display: inline-block;
-      margin-top: 40px;
-      background: #00BFFF;
+      margin-top: 30px;
+      background: #00bfff;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
       border-radius: 15px;
     }
-    .back-btn:hover {
-      background: #009ACD;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <h1>SST Resources</h1>
+  <h1>SST Lecture Videos</h1>
 
-  <h2>Lecture Videos</h2>
+  <div class="tabs">
+    <button class="tab-button active" onclick="showVideo(0)">📘 power sharng iLecture 1</button>
+    <button class="tab-button" onclick="showVideo(1)">📘power sharng Lecture 2</button>
+    <button class="tab-button" onclick="showVideo(2)">📘power sharng Lecture 3</button>
+    <button class="tab-button" onclick="showVideo(3)">📘power sharng Lecture 4</button>
+  </div>
 
-  <video id="video1" controls></video>
-  <label>Speed:
-    <select id="speed1" onchange="changeSpeed('video1', 'speed1')">
-      <option value="0.5">0.5x</option>
-      <option value="1" selected>1x</option>
-      <option value="1.5">1.5x</option>
-      <option value="2">2x</option>
-    </select>
-  </label>
-
-  <video id="video2" controls></video>
-  <label>Speed:
-    <select id="speed2" onchange="changeSpeed('video2', 'speed2')">
-      <option value="0.5">0.5x</option>
-      <option value="1" selected>1x</option>
-      <option value="1.5">1.5x</option>
-      <option value="2">2x</option>
-    </select>
-  </label>
-
-  <video id="video3" controls></video>
-  <label>Speed:
-    <select id="speed3" onchange="changeSpeed('video3', 'speed3')">
-      <option value="0.5">0.5x</option>
-      <option value="1" selected>1x</option>
-      <option value="1.5">1.5x</option>
-      <option value="2">2x</option>
-    </select>
-  </label>
-
-  <video id="video4" controls></video>
-  <label>Speed:
-    <select id="speed4" onchange="changeSpeed('video4', 'speed4')">
-      <option value="0.5">0.5x</option>
-      <option value="1" selected>1x</option>
-      <option value="1.5">1.5x</option>
-      <option value="2">2x</option>
-    </select>
-  </label>
+  <div id="videoContainers">
+    <div class="video-container active">
+      <video id="video1" controls></video>
+      <div class="speed-control">
+        <label>Speed:
+          <select onchange="changeSpeed('video1', this.value)">
+            <option value="0.5">0.5x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="video-container">
+      <video id="video2" controls></video>
+      <div class="speed-control">
+        <label>Speed:
+          <select onchange="changeSpeed('video2', this.value)">
+            <option value="0.5">0.5x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="video-container">
+      <video id="video3" controls></video>
+      <div class="speed-control">
+        <label>Speed:
+          <select onchange="changeSpeed('video3', this.value)">
+            <option value="0.5">0.5x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="video-container">
+      <video id="video4" controls></video>
+      <div class="speed-control">
+        <label>Speed:
+          <select onchange="changeSpeed('video4', this.value)">
+            <option value="0.5">0.5x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div>
 
   <a href="subjects.html" class="back-btn">← Back to Subjects</a>
 
@@ -125,12 +160,18 @@
       }
     });
 
-    function changeSpeed(videoId, selectId) {
-      const video = document.getElementById(videoId);
-      const speed = document.getElementById(selectId).value;
-      video.playbackRate = parseFloat(speed);
+    function changeSpeed(videoId, speed) {
+      document.getElementById(videoId).playbackRate = parseFloat(speed);
+    }
+
+    function showVideo(index) {
+      const tabs = document.querySelectorAll(".tab-button");
+      const videos = document.querySelectorAll(".video-container");
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle("active", i === index);
+        videos[i].classList.toggle("active", i === index);
+      });
     }
   </script>
-
 </body>
 </html>
