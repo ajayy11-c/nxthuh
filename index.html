@@ -1,77 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Good Morning</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gm</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       background-color: black;
       color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
-      transition: background 1s, color 1s;
+      height: 100vh;
+      overflow: hidden;
+      transition: background-color 2s ease;
     }
 
-    #lightBtn, #songBtn {
-      padding: 10px 20px;
-      margin: 10px auto;
+    button {
+      padding: 14px 28px;
       font-size: 18px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 2s;
+    }
+
+    #lightBtn {
       background-color: #00ffcc;
       color: black;
-      display: none;
     }
 
-    #happyMsg {
-      font-size: 36px;
-      display: none;
-      margin-top: 20px;
+    #songBtn {
+      background-color: #ff66b2;
+      color: white;
+    }
+
+    #message {
+      font-size: 48px;
       font-weight: bold;
+      color: #ff3399;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+      margin-top: 40px;
     }
 
-    .light {
-      background-color: #ffe6f0;
-      color: #ff0066;
+    .lightOn {
+      background-color: #fff0f5;
+      color: #333;
+    }
+
+    .visible {
+      opacity: 1 !important;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <button id="lightBtn">Turn on the lights</button>
+  <button id="lightBtn">Turn On The Lights</button>
   <button id="songBtn">Play Song</button>
-  <div id="happyMsg">Good Morning ❤️</div>
+  <div id="message">Good morning Janemann</div>
 
   <audio id="birthdaySong">
-    <source src="AJ.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
+    <source src="birthday.mp3" type="audio/mpeg">
+    Your browser does not support the audio tag.
   </audio>
 
+  <canvas id="confettiCanvas"></canvas>
+
+  <script src="confetti.js"></script>
   <script>
-    // Show first button after load
-    window.onload = function() {
-      document.getElementById("lightBtn").style.display = "inline-block";
-    }
+    const lightBtn = document.getElementById("lightBtn");
+    const songBtn = document.getElementById("songBtn");
+    const message = document.getElementById("message");
+    const audio = document.getElementById("birthdaySong");
 
-    document.getElementById("lightBtn").onclick = function() {
-      document.body.classList.add("light");
-      document.getElementById("lightBtn").style.display = "none";
-      document.getElementById("songBtn").style.display = "inline-block";
-    }
+    // Step 1: Show light button after 2 sec
+    setTimeout(() => {
+      lightBtn.classList.add("visible");
+    }, 2000);
 
-    document.getElementById("songBtn").onclick = function() {
-      document.getElementById("songBtn").style.display = "none";
-      document.getElementById("birthdaySong").play();
-      document.getElementById("happyMsg").style.display = "block";
-    }
+    // Step 2: On light button click
+    lightBtn.onclick = () => {
+      document.body.classList.add("lightOn");
+      lightBtn.style.display = "none";
+      songBtn.classList.add("visible");
+    };
+
+    // Step 3: On play song button click
+    songBtn.onclick = () => {
+      songBtn.style.display = "none";
+      audio.play();
+      message.classList.add("visible");
+      // Start confetti 🎉
+      startConfetti();
+    };
   </script>
-
 </body>
 </html>
