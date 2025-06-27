@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>science Lectures</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #001f3f;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+    }
+    h1 {
+      color: #00bfff;
+      margin-bottom: 20px;
+    }
+    .lecture-list button {
+      display: block;
+      background: #007acc;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin: 10px auto;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    a.back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      background: #00bfff;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>science Lecture List</h1>
+
+  <div class="lecture-list" id="lectureList"></div>
+
+  <a href="subjects.html" class="back-btn">← Back to Subjects</a>
+
+  <script>
+    const lectures = [
+      {
+        title: "📘 Power Sharing Lecture 1",
+        url: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4372168/174644893368577880624/174644893368577880624_7880624.m3u8"
+      },
+      {
+        title: "📘 Power Sharing Lecture 2",
+        url: "https://d3cx6qbbd4cbso.cloudfront.net/file_library/videos/vod_non_drm_ios/4387658/1747816567_1824395781527963/sunny/1747816234724_549446162669787600_video_VOD.m3u8"
+      },
+      {
+        title: "📘 Power Sharing Lecture 3",
+        url: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4374999/174663266860947880624/174663266860947880624_7880624.m3u8"
+      },
+      {
+        title: "📘 Power Sharing Lecture 4",
+        url: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4376187/174671890371767880624/174671890371767880624_7880624.m3u8"
+      }
+    ];
+
+    const listDiv = document.getElementById("lectureList");
+
+    lectures.forEach(lec => {
+      const btn = document.createElement("button");
+      btn.textContent = lec.title;
+      btn.onclick = () => {
+        const encodedURL = encodeURIComponent(lec.url);
+        const encodedTitle = encodeURIComponent(lec.title);
+        window.location.href = `player.html?video=${encodedURL}&title=${encodedTitle}`;
+      };
+      listDiv.appendChild(btn);
+    });
+  </script>
+
+</body>
+</html>
