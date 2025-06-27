@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lecture Player</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #001f3f;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+    }
+    h1 {
+      color: #00bfff;
+      margin-bottom: 20px;
+    }
+    video {
+      width: 100%;
+      max-width: 720px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #00bfff;
+    }
+    .speed-control {
+      margin-top: 10px;
+    }
+    select {
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+    a.back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      background: #00bfff;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="title">Lecture</h1>
+
+  <video id="videoPlayer" controls></video>
+
+  <div class="speed-control">
+    <label>Speed:
+      <select onchange="changeSpeed(this.value)">
+        <option value="0.5">0.5x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.5">1.5x</option>
+        <option value="2">2x</option>
+      </select>
+    </label>
+  </div>
+
+  <a href="subjects.html" class="back-btn">← Back to Subjects</a>
+
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const videoUrl = getQueryParam('video');
+    const videoTitle = getQueryParam('title') || 'Lecture';
+    const video = document.getElementById("videoPlayer");
+    document.getElementById("title").textContent = videoTitle;
+
+    if (videoUrl) {
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(videoUrl);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = videoUrl;
+      }
+    } else {
+      alert("No video URL provided!");
+    }
+
+    function changeSpeed(speed) {
+      video.playbackRate = parseFloat(speed);
+    }
+  </script>
+</body>
+</html>
