@@ -20,7 +20,6 @@
     }
     .tabs {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
       margin-bottom: 20px;
     }
@@ -28,21 +27,33 @@
       background-color: #00bfff;
       color: white;
       border: none;
-      padding: 10px 15px;
+      padding: 10px 20px;
       margin: 5px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 14px;
     }
     .tab-button.active {
       background-color: #007acc;
     }
-    .video-container {
+    .tab-content {
       display: none;
+    }
+    .tab-content.active {
+      display: block;
       animation: fadeIn 0.5s;
     }
-    .video-container.active {
+    .lecture-list button {
       display: block;
+      background: #007acc;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin: 10px auto;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
     }
     video {
       width: 100%;
@@ -52,13 +63,12 @@
     }
     .speed-control {
       margin-top: 10px;
-      margin-bottom: 30px;
     }
     select {
       padding: 5px 10px;
       border-radius: 10px;
     }
-    a.back-btn {
+    .back-btn {
       display: inline-block;
       margin-top: 30px;
       background: #00bfff;
@@ -78,70 +88,41 @@
   <h1>SST Lecture Videos</h1>
 
   <div class="tabs">
-    <button class="tab-button active" onclick="showVideo(0)">📘 power sharng iLecture 1</button>
-    <button class="tab-button" onclick="showVideo(1)">📘power sharng Lecture 2</button>
-    <button class="tab-button" onclick="showVideo(2)">📘power sharng Lecture 3</button>
-    <button class="tab-button" onclick="showVideo(3)">📘power sharng Lecture 4</button>
+    <button class="tab-button active" onclick="switchTab(0)">📄 Content List</button>
+    <button class="tab-button" onclick="switchTab(1)">📺 Video Player</button>
   </div>
 
-  <div id="videoContainers">
-    <div class="video-container active">
-      <video id="video1" controls></video>
-      <div class="speed-control">
-        <label>Speed:
-          <select onchange="changeSpeed('video1', this.value)">
-            <option value="0.5">0.5x</option>
-            <option value="1" selected>1x</option>
-            <option value="1.5">1.5x</option>
-            <option value="2">2x</option>
-          </select>
-        </label>
-      </div>
+  <!-- Content List -->
+  <div class="tab-content active">
+    <div class="lecture-list">
+      <button onclick="playVideo(0)">📘 Power Sharing Lecture 1</button>
+      <button onclick="playVideo(1)">📘 Power Sharing Lecture 2</button>
+      <button onclick="playVideo(2)">📘 Power Sharing Lecture 3</button>
+      <button onclick="playVideo(3)">📘 Power Sharing Lecture 4</button>
     </div>
-    <div class="video-container">
-      <video id="video2" controls></video>
-      <div class="speed-control">
-        <label>Speed:
-          <select onchange="changeSpeed('video2', this.value)">
-            <option value="0.5">0.5x</option>
-            <option value="1" selected>1x</option>
-            <option value="1.5">1.5x</option>
-            <option value="2">2x</option>
-          </select>
-        </label>
-      </div>
-    </div>
-    <div class="video-container">
-      <video id="video3" controls></video>
-      <div class="speed-control">
-        <label>Speed:
-          <select onchange="changeSpeed('video3', this.value)">
-            <option value="0.5">0.5x</option>
-            <option value="1" selected>1x</option>
-            <option value="1.5">1.5x</option>
-            <option value="2">2x</option>
-          </select>
-        </label>
-      </div>
-    </div>
-    <div class="video-container">
-      <video id="video4" controls></video>
-      <div class="speed-control">
-        <label>Speed:
-          <select onchange="changeSpeed('video4', this.value)">
-            <option value="0.5">0.5x</option>
-            <option value="1" selected>1x</option>
-            <option value="1.5">1.5x</option>
-            <option value="2">2x</option>
-          </select>
-        </label>
-      </div>
+  </div>
+
+  <!-- Video Player -->
+  <div class="tab-content">
+    <video id="player" controls></video>
+    <div class="speed-control">
+      <label>Speed:
+        <select onchange="changeSpeed(this.value)">
+          <option value="0.5">0.5x</option>
+          <option value="1" selected>1x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2">2x</option>
+        </select>
+      </label>
     </div>
   </div>
 
   <a href="subjects.html" class="back-btn">← Back to Subjects</a>
 
   <script>
+    const tabs = document.querySelectorAll(".tab-content");
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const videoPlayer = document.getElementById("player");
     const sources = [
       "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4372168/174644893368577880624/174644893368577880624_7880624.m3u8",
       "https://d3cx6qbbd4cbso.cloudfront.net/file_library/videos/vod_non_drm_ios/4387658/1747816567_1824395781527963/sunny/1747816234724_549446162669787600_video_VOD.m3u8",
@@ -149,28 +130,29 @@
       "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4376187/174671890371767880624/174671890371767880624_7880624.m3u8"
     ];
 
-    sources.forEach((src, i) => {
-      const video = document.getElementById(`video${i + 1}`);
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(src);
-        hls.attachMedia(video);
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = src;
-      }
-    });
+    let hls;
 
-    function changeSpeed(videoId, speed) {
-      document.getElementById(videoId).playbackRate = parseFloat(speed);
-    }
-
-    function showVideo(index) {
-      const tabs = document.querySelectorAll(".tab-button");
-      const videos = document.querySelectorAll(".video-container");
+    function switchTab(index) {
       tabs.forEach((tab, i) => {
         tab.classList.toggle("active", i === index);
-        videos[i].classList.toggle("active", i === index);
+        tabButtons[i].classList.toggle("active", i === index);
       });
+    }
+
+    function playVideo(index) {
+      if (Hls.isSupported()) {
+        if (hls) hls.destroy(); // Destroy old instance
+        hls = new Hls();
+        hls.loadSource(sources[index]);
+        hls.attachMedia(videoPlayer);
+      } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+        videoPlayer.src = sources[index];
+      }
+      switchTab(1); // Go to Video Player tab
+    }
+
+    function changeSpeed(speed) {
+      videoPlayer.playbackRate = parseFloat(speed);
     }
   </script>
 </body>
