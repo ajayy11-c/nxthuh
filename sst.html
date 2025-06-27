@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SST Lectures</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
     body {
       margin: 0;
@@ -17,30 +16,6 @@
     h1 {
       color: #00bfff;
       margin-bottom: 20px;
-    }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .tab-button {
-      background-color: #00bfff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .tab-button.active {
-      background-color: #007acc;
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-      animation: fadeIn 0.5s;
     }
     .lecture-list button {
       display: block;
@@ -55,20 +30,7 @@
       cursor: pointer;
       font-size: 15px;
     }
-    video {
-      width: 100%;
-      max-width: 700px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px #00bfff;
-    }
-    .speed-control {
-      margin-top: 10px;
-    }
-    select {
-      padding: 5px 10px;
-      border-radius: 10px;
-    }
-    .back-btn {
+    a.back-btn {
       display: inline-block;
       margin-top: 30px;
       background: #00bfff;
@@ -77,83 +39,49 @@
       text-decoration: none;
       border-radius: 15px;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
   </style>
 </head>
 <body>
 
-  <h1>SST Lecture Videos</h1>
+  <h1>SST Lecture List</h1>
 
-  <div class="tabs">
-    <button class="tab-button active" onclick="switchTab(0)">📄 Content List</button>
-    <button class="tab-button" onclick="switchTab(1)">📺 Video Player</button>
-  </div>
-
-  <!-- Content List -->
-  <div class="tab-content active">
-    <div class="lecture-list">
-      <button onclick="playVideo(0)">📘 Power Sharing Lecture 1</button>
-      <button onclick="playVideo(1)">📘 Power Sharing Lecture 2</button>
-      <button onclick="playVideo(2)">📘 Power Sharing Lecture 3</button>
-      <button onclick="playVideo(3)">📘 Power Sharing Lecture 4</button>
-    </div>
-  </div>
-
-  <!-- Video Player -->
-  <div class="tab-content">
-    <video id="player" controls></video>
-    <div class="speed-control">
-      <label>Speed:
-        <select onchange="changeSpeed(this.value)">
-          <option value="0.5">0.5x</option>
-          <option value="1" selected>1x</option>
-          <option value="1.5">1.5x</option>
-          <option value="2">2x</option>
-        </select>
-      </label>
-    </div>
-  </div>
+  <div class="lecture-list" id="lectureList"></div>
 
   <a href="subjects.html" class="back-btn">← Back to Subjects</a>
 
   <script>
-    const tabs = document.querySelectorAll(".tab-content");
-    const tabButtons = document.querySelectorAll(".tab-button");
-    const videoPlayer = document.getElementById("player");
-    const sources = [
-      "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4372168/174644893368577880624/174644893368577880624_7880624.m3u8",
-      "https://d3cx6qbbd4cbso.cloudfront.net/file_library/videos/vod_non_drm_ios/4387658/1747816567_1824395781527963/sunny/1747816234724_549446162669787600_video_VOD.m3u8",
-      "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4374999/174663266860947880624/174663266860947880624_7880624.m3u8",
-      "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4376187/174671890371767880624/174671890371767880624_7880624.m3u8"
+    const lectures = [
+      {
+        title: "📘 Power Sharing Lecture 1",
+        url: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4372168/174644893368577880624/174644893368577880624_7880624.m3u8"
+      },
+      {
+        title: "📘 Power Sharing Lecture 2",
+        url: "https://d3cx6qbbd4cbso.cloudfront.net/file_library/videos/vod_non_drm_ios/4387658/1747816567_1824395781527963/sunny/1747816234724_549446162669787600_video_VOD.m3u8"
+      },
+      {
+        title: "📘 Power Sharing Lecture 3",
+        url: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4374999/174663266860947880624/174663266860947880624_7880624.m3u8"
+      },
+      {
+        title: "📘 Power Sharing Lecture 4",
+        url: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4376187/174671890371767880624/174671890371767880624_7880624.m3u8"
+      }
     ];
 
-    let hls;
+    const listDiv = document.getElementById("lectureList");
 
-    function switchTab(index) {
-      tabs.forEach((tab, i) => {
-        tab.classList.toggle("active", i === index);
-        tabButtons[i].classList.toggle("active", i === index);
-      });
-    }
-
-    function playVideo(index) {
-      if (Hls.isSupported()) {
-        if (hls) hls.destroy(); // Destroy old instance
-        hls = new Hls();
-        hls.loadSource(sources[index]);
-        hls.attachMedia(videoPlayer);
-      } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
-        videoPlayer.src = sources[index];
-      }
-      switchTab(1); // Go to Video Player tab
-    }
-
-    function changeSpeed(speed) {
-      videoPlayer.playbackRate = parseFloat(speed);
-    }
+    lectures.forEach(lec => {
+      const btn = document.createElement("button");
+      btn.textContent = lec.title;
+      btn.onclick = () => {
+        const encodedURL = encodeURIComponent(lec.url);
+        const encodedTitle = encodeURIComponent(lec.title);
+        window.location.href = `player.html?video=${encodedURL}&title=${encodedTitle}`;
+      };
+      listDiv.appendChild(btn);
+    });
   </script>
+
 </body>
 </html>
